@@ -1,9 +1,15 @@
 package com.rst.webservices.restfulwebservices.user;
 
+
+//import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.hateoas.Resource;
+//import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +46,17 @@ public class UserResourceController {
 		if(retrievedUser == null)
 			throw new UserNotFoundException("id-"+id);
 		
+		/*HATEOAS -> Hyper Media as the engine of application state
+		 "all-users", SERVER_PATH + "/users"
+		 retrieveAllUsers
+		 adding links with retrieved user
+		*/
+//		Resource<User> resource = new Resource<User>(retrievedUser);
+//		
+//		ControllerLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+//		
+//		resource.add(linkTo.withRel("all-users"));
+		
 		return retrievedUser;
 	}
 	
@@ -52,14 +69,17 @@ public class UserResourceController {
 			throw new UserNotFoundException("id-"+id); 		
 	}
 	
+	
+	
+	
 	/*Post request
 	 input - details of user
 	 output - Created Status and Return the Created URI*/
 	
 	@PostMapping("/users")
-	public ResponseEntity<Object> creatUser(@RequestBody User user) {
+	public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 		
-		//Request Body parameter maps response to User class in json format in post body
+		//Request Body parameter maps response to User class in JSON format in post body
 		User savedUser = service.save(user);
 		
 		/*
@@ -80,3 +100,18 @@ public class UserResourceController {
 	}
 	
 }
+
+
+/*
+<dependency>
+		    <groupId>org.springframework.hateoas</groupId>
+		    <artifactId>spring-hateoas</artifactId>
+		    <version>0.18.0.RELEASE</version>
+</dependency>
+<dependency>
+		    <groupId>org.springframework.hateoas</groupId>
+		    <artifactId>spring-hateoas</artifactId>
+		    <version>0.16.0.RELEASE</version>
+</dependency>
+		 
+ * */
